@@ -30,9 +30,9 @@ wget https://node-envvars-artifact.s3.eu-west-2.amazonaws.com/bootcamp-node-envv
 tar zxvf ./bootcamp-node-envvars-project-1.0.0.tgz
 
 # Set all needed environment variables
-export APP_ENV=dev
-export DB_PWD=mysecret
-export DB_USER=myuser
+export APP_ENV=development
+export DB_USER=myUser
+export DB_PWD=myPassword
 
 # Check if all required environment variables are set
 if [ -z "$APP_ENV" ] || [ -z "$DB_PWD" ] || [ -z "$DB_USER" ]; then
@@ -54,21 +54,20 @@ cd package
 
 # Install application dependencies
 echo "Installing application dependencies..."
-npm install
+npm install 
+npm install dotenv
+npm install express@4.19.2
 
 # Function to start Node.js application
 start_node_app() {
     echo "Starting the nodejs application..."
-    nvm use 14
     node server.js &
     sleep 2 # Wait for 2 seconds to ensure the process starts
     ps aux | grep node | grep -v grep
     echo ""
     echo "NodeJS is running on port 3000:"
-    lsof -nP -iTCP:3000 -sTCP:LISTEN
 }
 
-# Attempt to start the application
 start_node_app
 
 # Check if Node.js is running on port 3000, handle EADDRINUSE error
@@ -89,4 +88,5 @@ echo "############################"
 echo "High severity vulnerabilities:"
 npm audit --json | jq '.metadata.vulnerabilities.high'
 echo "############################"
+
 
